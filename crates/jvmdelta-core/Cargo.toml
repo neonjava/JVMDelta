@@ -5,4 +5,3 @@ edition.workspace = true
 license.workspace = true
 rust-version.workspace = true
 description = "Core types for JVM performance regression analysis"
-

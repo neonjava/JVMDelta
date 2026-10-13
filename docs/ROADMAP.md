@@ -25,4 +25,3 @@ Create a structured report model and terminal/JSON output. Document reproducible
 ## Day 7 — JFR research and hardening
 
 Document JFR format and licensing considerations, decide on a JVM-free parsing approach, and prototype a narrow reader if feasible. Review performance on bounded fixtures and improve error messages. Schedule full JFR, HTML, and distribution work based on results.
-

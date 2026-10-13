@@ -12,4 +12,3 @@ cargo build --workspace --release
 ```
 
 Keep core logic independent of CLI formatting. Add unit tests for domain behavior and CLI integration tests for observable exit codes and output. Store small, redistributable sample recordings in `tests/fixtures` once parsers exist; document where each fixture came from. Do not commit generated reports, recordings containing sensitive application data, credentials, or `target` artifacts.
-

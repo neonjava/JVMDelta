@@ -53,4 +53,3 @@ See [development guidance](docs/DEVELOPMENT.md) for test and contribution practi
 ## Contributing
 
 Issues and focused pull requests are welcome. Discuss input format choices and regression semantics before implementing a parser or detector. Add representative fixtures and tests for behavior, keep parser errors explicit, and run the checks above. Contributions are licensed under [Apache-2.0](LICENSE).
-

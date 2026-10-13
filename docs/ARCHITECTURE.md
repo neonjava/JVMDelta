@@ -1,25 +1,19 @@
 # Architecture
 
-The workspace separates analysis from command-line presentation.
+`jvmdelta-core` owns format parsing and analysis types. `jvmdelta-cli` owns argument parsing, file opening, presentation, and process exit status. The core parser takes any `BufRead`; it does not depend on Clap, paths, or a JVM.
 
-`jvmdelta-core` owns input interpretation, measurements, comparison rules, regression decisions, and report data. `jvmdelta-cli` will parse user arguments, call core APIs, select an output format, and choose an exit status. A caller using the library will not need Clap or a JVM.
-
-Intended data flow:
+The implemented GC path is:
 
 ```text
-GC log / JFR recording
+UTF-8 G1 Unified GC log
+        ↓ bounded line reader (64 KiB per line)
+validated pause event / explicit skip reason / structured error
         ↓
-format-specific parser and validated events
-        ↓
-measurements with explicit units and provenance
-        ↓
-baseline/candidate comparison
-        ↓
-regression decisions and structured report
-        ↓
-terminal / JSON / HTML renderer
+CLI category counts or SDK caller processing
 ```
 
-Only module boundaries and a few domain types exist on Day 1. A source line type validates one-based line numbering. Units, comparison sides, regression direction, and report formats are enums for upcoming APIs. There is no parser, analysis, or renderer yet.
+`GcLogParser` yields records one at a time, so SDK users can aggregate or store only what they need. An event retains its source line and original line, GC ID, pause category, description, optional heap values in bytes, duration in nanoseconds, and optional uptime in nanoseconds. The CLI stops at the first error. SDK users may continue after malformed candidate lines, but terminal errors end iteration.
 
-Future parsers should preserve source location in errors and distinguish unsupported input from malformed input. Metric definitions should state units, aggregation, and whether higher or lower values are worse. Comparison should avoid inferring statistical significance from a single sample. Structured report data should remain independent of output rendering.
+The comparison, metrics, regression, and report modules remain small domain definitions for later work. They do not calculate results. The intended later flow is measurements → baseline/candidate comparison → regression decisions → report model → output renderer. Metric definitions must state units and aggregation rules; comparison must avoid implying statistical significance from one sample.
+
+See [GC log support](GC_LOG_SUPPORT.md) for the exact accepted syntax and limitations.

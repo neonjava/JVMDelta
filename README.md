@@ -1,45 +1,34 @@
 # JVMDelta
 
-JVMDelta is a Rust project for comparing JVM performance measurements before and after a software change. The goal is to make regressions visible in local development and CI without requiring a JVM to analyze recorded data.
-
-Performance evidence is often spread across GC logs and JFR recordings. Comparing runs by hand is slow and makes it easy to overlook a change in pause time or allocation. JVMDelta aims to ingest those recordings, compare a baseline with a candidate, and produce clear reports.
+JVMDelta is a Rust project for comparing JVM performance measurements before and after a software change. GC logs and JFR recordings can contain evidence that is tedious to inspect by hand. JVMDelta aims to make those measurements accessible locally and in CI without needing a JVM for analysis.
 
 ## Current status
 
-Day 1 is a foundation release. The `jvmdelta` executable provides `--help` and `--version`. It does **not** parse recordings, compare runs, detect regressions, or produce reports yet. Unsupported commands fail with a nonzero exit status.
+The current CLI inspects a narrow subset of G1 Unified GC pause summaries. It counts supported young, full, remark, and cleanup pauses, unrelated entries, and unknown pause categories. The core library exposes parsed events with exact units and source-line provenance. Invalid supported summaries fail with a line-numbered error. See [supported syntax and limitations](docs/GC_LOG_SUPPORT.md).
+
+Comparison, regression detection, JFR parsing, JSON/HTML reports, and a GitHub Action are **planned**, not implemented.
 
 ## Architecture
 
-- `crates/jvmdelta-core`: reusable library with small domain modules for GC logs, metrics, comparisons, regression rules, and reports. Its current types define vocabulary only.
-- `crates/jvmdelta-cli`: Clap based executable. CLI presentation stays outside the core library.
-- `tests/fixtures`: reserved for representative, licensed input files as parsers are implemented.
-- `docs`: architecture, development guidance, and the implementation roadmap.
-
-See [architecture](docs/ARCHITECTURE.md) for the intended data flow and boundaries.
-
-## Planned features
-
-- Parse JVM Unified GC logs and JFR recordings.
-- Compute supported pause, memory, and allocation metrics.
-- Compare baseline and candidate measurements and detect configured regressions.
-- Render terminal, JSON, and HTML reports.
-- Supply a GitHub Action for CI use.
-
-These features are planned; no analysis command is available today.
+- `crates/jvmdelta-core`: bounded streaming GC parser and small domain modules for future metrics, comparison, regression, and reports.
+- `crates/jvmdelta-cli`: Clap executable, file access, counts, and exit status.
+- `tests/fixtures`: synthetic JDK 17/21-style examples and selected real JDK 25 G1 output.
+- `docs`: [architecture](docs/ARCHITECTURE.md), [format support](docs/GC_LOG_SUPPORT.md), [development](docs/DEVELOPMENT.md), and [roadmap](docs/ROADMAP.md).
 
 ## Build and use
 
-Requires stable Rust 1.85 or newer. No JVM is needed for the current CLI.
+Requires stable Rust 1.85 or newer. Java is not required to build, test, or inspect a log.
 
 ```sh
 cargo build --workspace
 cargo run -p jvmdelta-cli -- --help
 cargo run -p jvmdelta-cli -- --version
+cargo run -p jvmdelta-cli -- gc inspect tests/fixtures/jdk25-g1-real.log
 ```
 
-The installed binary is named `jvmdelta`; for example, `jvmdelta --help`.
+The installed executable is named `jvmdelta`. `gc inspect` uses strict parsing: unreadable files and malformed supported summaries exit nonzero with an error on stderr.
 
-## Development
+## Development and contributing
 
 ```sh
 cargo fmt --all -- --check
@@ -48,8 +37,4 @@ cargo test --workspace
 cargo build --workspace --release
 ```
 
-See [development guidance](docs/DEVELOPMENT.md) for test and contribution practices.
-
-## Contributing
-
-Issues and focused pull requests are welcome. Discuss input format choices and regression semantics before implementing a parser or detector. Add representative fixtures and tests for behavior, keep parser errors explicit, and run the checks above. Contributions are licensed under [Apache-2.0](LICENSE).
+Focused issues and pull requests are welcome. Discuss new GC variants or comparison semantics before extending support. Add representative, redistributable fixtures and tests, keep errors explicit, and document limitations. Contributions are licensed under [Apache-2.0](LICENSE).

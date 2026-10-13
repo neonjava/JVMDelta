@@ -1,27 +1,29 @@
-# Day 2–7 roadmap
+# Development roadmap
 
-These are implementation targets, not shipped features. Adjust scope when format research or representative fixtures reveal constraints.
+## Completed — Day 1
 
-## Day 2 — GC log contract
+Cargo workspace, CLI foundation, documentation, Apache-2.0 license, and CI.
 
-Choose supported Java Unified Logging syntax and versions. Add small, redistributable fixtures covering timestamps, tags, units, malformed lines, and unknown events. Define event types and useful parser errors.
+## Completed — Day 2
 
-## Day 3 — GC parsing and measurements
+A bounded streaming parser for selected G1 Unified GC pause summaries, typed events with exact units and source provenance, explicit errors and skip reasons, real and synthetic fixtures, and `gc inspect`. See [format support](GC_LOG_SUPPORT.md).
 
-Implement a streaming parser for the documented subset. Calculate pause counts and duration summaries with explicit units. Test event extraction against fixtures and malformed input.
+## Day 3 — measurements and broader fixture validation
 
-## Day 4 — Comparison semantics
+Validate the supported syntax against local JDK 17 and 21 output when available. Add carefully defined pause duration summaries and GC counts to the core, with tests for aggregation and missing data. Consider explicit support for additional decorators and duration units only after fixture evidence.
 
-Define baseline and candidate data sets, missing-metric behavior, and percentage-change rules. Implement deterministic comparisons with tests for zero baselines and unequal sample sizes.
+## Day 4 — comparison semantics
 
-## Day 5 — Regression policy and CLI
+Define baseline/candidate data sets, zero-baseline behavior, and missing-metric behavior. Implement deterministic comparisons without implying significance from a single run.
 
-Add explicit thresholds and exit codes. Introduce a compare command only after it can reject unsupported or incomplete input clearly. Test CLI error paths and real fixture comparisons.
+## Day 5 — regression policy and CLI
 
-## Day 6 — Reports and CI usage
+Add explicit thresholds and exit codes after comparison semantics are tested.
 
-Create a structured report model and terminal/JSON output. Document reproducible CI invocation and add a minimal GitHub Action workflow example. Keep HTML as a later milestone if report data is still changing.
+## Day 6 — reports and CI usage
+
+Add structured report data, terminal and JSON output, and a reproducible CI example. Defer HTML if the report model is still changing.
 
 ## Day 7 — JFR research and hardening
 
-Document JFR format and licensing considerations, decide on a JVM-free parsing approach, and prototype a narrow reader if feasible. Review performance on bounded fixtures and improve error messages. Schedule full JFR, HTML, and distribution work based on results.
+Document a JVM-free JFR approach and format/licensing constraints. Improve diagnostics and review performance on bounded fixtures.

@@ -1,0 +1,5 @@
+[0.123s][info][gc] GC(0) Pause Young (Normal) (G1 Evacuation Pause) 20M->8M(128M) 3.452ms
+[0.124s][info][gc,start] GC(1) Pause Full (System.gc())
+[0.130s][info][gc] GC(1) Pause Full (System.gc()) 8M->4M(128M) 6.250ms
+[0.135s][info][gc] GC(2) Pause Remark 1.125ms
+[0.140s][info][gc] GC(2) Pause Cleanup 2M->1M(128M) 0.050ms

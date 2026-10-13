@@ -1,0 +1,3 @@
+[2024-01-01T00:00:00.123+0000][0.123s][info][gc] GC(12) Pause Young (Concurrent Start) (G1 Humongous Allocation) 1024K->512K(1G) 0.125ms
+[0.130s][info][gc,heap] GC(12) Eden regions: 4->0(2)
+[0.140s][info][gc] GC(13) Pause Full (G1 Compaction Pause) 1G->512M(2G) 12.000ms

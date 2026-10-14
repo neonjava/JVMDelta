@@ -4,15 +4,15 @@ JVMDelta is a Rust project for comparing JVM performance measurements before and
 
 ## Current status
 
-The current CLI inspects a narrow subset of G1 Unified GC pause summaries. It counts supported young, full, remark, and cleanup pauses, unrelated entries, and unknown pause categories. The core library exposes parsed events with exact units and source-line provenance. Invalid supported summaries fail with a line-numbered error. See [supported syntax and limitations](docs/GC_LOG_SUPPORT.md).
+The current CLI inspects a narrow subset of G1 Unified GC pause summaries. It counts supported young, full, remark, and cleanup pauses, unrelated entries, and unknown pause categories. It also reports exact total, minimum, maximum, and nanosecond-rounded-down mean pause durations per category and overall. The core library exposes parsed events with exact units and source-line provenance. Invalid supported summaries fail with a line-numbered error. See [supported syntax and limitations](docs/GC_LOG_SUPPORT.md).
 
 Comparison, regression detection, JFR parsing, JSON/HTML reports, and a GitHub Action are **planned**, not implemented.
 
 ## Architecture
 
-- `crates/jvmdelta-core`: bounded streaming GC parser and small domain modules for future metrics, comparison, regression, and reports.
+- `crates/jvmdelta-core`: bounded streaming GC parser and constant-size pause statistics; small domain modules reserve comparison, regression, and report concepts.
 - `crates/jvmdelta-cli`: Clap executable, file access, counts, and exit status.
-- `tests/fixtures`: synthetic JDK 17/21-style examples and selected real JDK 25 G1 output.
+- `tests/fixtures`: synthetic edge cases and selected real Temurin 17/21 and OpenJDK 25 G1 output.
 - `docs`: [architecture](docs/ARCHITECTURE.md), [format support](docs/GC_LOG_SUPPORT.md), [development](docs/DEVELOPMENT.md), and [roadmap](docs/ROADMAP.md).
 
 ## Build and use
@@ -24,6 +24,7 @@ cargo build --workspace
 cargo run -p jvmdelta-cli -- --help
 cargo run -p jvmdelta-cli -- --version
 cargo run -p jvmdelta-cli -- gc inspect tests/fixtures/jdk25-g1-real.log
+cargo run -p jvmdelta-cli -- gc inspect tests/fixtures/jdk17-g1-real.log
 ```
 
 The installed executable is named `jvmdelta`. `gc inspect` uses strict parsing: unreadable files and malformed supported summaries exit nonzero with an error on stderr.

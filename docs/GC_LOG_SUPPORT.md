@@ -1,6 +1,6 @@
 # G1 Unified GC log support
 
-JVMDelta parses a deliberately narrow subset of HotSpot Unified Logging as emitted by G1 on JDK 17 and 21. The JDK 17 and 21 fixtures are **synthetic examples** modeled on documented syntax; they have not been validated against those local JVM versions. A separate small JDK 25 fixture was captured locally and checks the same syntax. The parser does not identify a JVM version or independently verify the collector from a log; callers should supply G1 logs.
+JVMDelta parses a deliberately narrow subset of HotSpot Unified Logging as emitted by G1 on JDK 17 and 21. Real Temurin 17.0.20.1 and 21.0.12.1 excerpts now validate young and full summaries; synthetic fixtures cover additional syntax and failures. A separate JDK 25 fixture checks the same syntax. The parser does not identify a JVM version or independently verify the collector from a log; callers should supply G1 logs.
 
 Authoritative references:
 
@@ -33,7 +33,7 @@ The event has ID 0, uptime 123,000,000 ns, heap 20/8/128 MiB expressed as bytes,
 cargo run -p jvmdelta-cli -- gc inspect tests/fixtures/jdk25-g1-real.log
 ```
 
-The command prints supported event totals, counts for each category, unrelated entries skipped, and unsupported pause types skipped. It does not compute regression scores.
+The command prints supported pause totals and counts for each category, unrelated entries skipped, unsupported pause types skipped, and duration statistics in milliseconds. For every category and overall, total/minimum/maximum are exact. Mean is rounded down to one nanosecond before display. An empty category has total `0.000000` ms and `n/a` for minimum, mean, and maximum. Counts refer to pause summary records, not distinct GC IDs or collection cycles. The CLI does not compute regression scores.
 
 ## Fixtures
 

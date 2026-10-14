@@ -1,0 +1,5 @@
+[0.028s][info][gc,start    ] GC(0) Pause Young (Concurrent Start) (G1 Humongous Allocation)
+[0.029s][info][gc,heap     ] GC(0) Eden regions: 1->0(10)
+[0.029s][info][gc          ] GC(0) Pause Young (Concurrent Start) (G1 Humongous Allocation) 13M->1M(32M) 1.420ms
+[0.044s][info][gc,start    ] GC(32) Pause Full (System.gc())
+[0.047s][info][gc             ] GC(32) Pause Full (System.gc()) 7M->0M(32M) 2.327ms

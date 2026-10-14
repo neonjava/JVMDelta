@@ -8,13 +8,13 @@ Cargo workspace, CLI foundation, documentation, Apache-2.0 license, and CI.
 
 A bounded streaming parser for selected G1 Unified GC pause summaries, typed events with exact units and source provenance, explicit errors and skip reasons, real and synthetic fixtures, and `gc inspect`. See [format support](GC_LOG_SUPPORT.md).
 
-## Day 3 — measurements and broader fixture validation
+## Completed — Day 3
 
-Validate the supported syntax against local JDK 17 and 21 output when available. Add carefully defined pause duration summaries and GC counts to the core, with tests for aggregation and missing data. Consider explicit support for additional decorators and duration units only after fixture evidence.
+Validated young and full pause summaries against local Temurin 17 and 21 G1 output. Added constant-size category and overall pause counts and exact duration statistics, with explicit missing-data behavior and CLI output. Real fixture excerpts and reproduction instructions are checked in. Remark/cleanup examples remain synthetic.
 
 ## Day 4 — comparison semantics
 
-Define baseline/candidate data sets, zero-baseline behavior, and missing-metric behavior. Implement deterministic comparisons without implying significance from a single run.
+Define baseline/candidate data sets, zero-baseline behavior, and missing-metric behavior. Implement deterministic comparisons without implying significance from a single run. Decide how to handle unequal run duration and event counts before showing deltas.
 
 ## Day 5 — regression policy and CLI
 

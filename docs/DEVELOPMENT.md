@@ -11,10 +11,12 @@ cargo test --workspace
 cargo build --workspace --release
 ```
 
-Run the CLI against the real captured fixture:
+Run the CLI against real captured fixtures:
 
 ```sh
 cargo run -p jvmdelta-cli -- gc inspect tests/fixtures/jdk25-g1-real.log
+cargo run -p jvmdelta-cli -- gc inspect tests/fixtures/jdk17-g1-real.log
+cargo run -p jvmdelta-cli -- gc inspect tests/fixtures/jdk21-g1-real.log
 ```
 
-Keep core logic independent of CLI formatting. Add unit tests for parser behavior and CLI integration tests for exit codes and output. Record each fixture's origin, JDK version, collector, and reproduction procedure in `tests/fixtures/README.md`. Do not commit sensitive recordings, credentials, or build artifacts. See [format support](GC_LOG_SUPPORT.md) before extending the parser.
+Keep core logic independent of CLI formatting. Add unit tests for parser and aggregate behavior and CLI integration tests for exit codes and output. Record each fixture's origin, JDK version, collector, and reproduction procedure in `tests/fixtures/README.md`. Rust tests must not require Java. Do not commit sensitive recordings, credentials, or build artifacts. See [format support](GC_LOG_SUPPORT.md) before extending the parser.

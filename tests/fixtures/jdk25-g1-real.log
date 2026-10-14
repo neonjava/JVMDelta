@@ -1,0 +1,6 @@
+[0.645s][info][gc,start    ] GC(0) Pause Young (Normal) (G1 Evacuation Pause)
+[0.656s][info][gc,heap     ] GC(0) Eden regions: 17->0(11)
+[0.656s][info][gc,heap     ] GC(0) Survivor regions: 0->3(3)
+[0.656s][info][gc,heap     ] GC(0) Old regions: 2->3
+[0.656s][info][gc          ] GC(0) Pause Young (Normal) (G1 Evacuation Pause) 18M->4M(32M) 10.235ms
+[0.840s][info][gc             ] GC(49) Pause Full (System.gc()) 7M->2M(32M) 12.735ms

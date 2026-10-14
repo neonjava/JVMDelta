@@ -1,8 +1,8 @@
 # Development
 
-Use stable Rust 1.85 or newer. The workspace uses Rust 2024 edition and Cargo resolver 3.
+Use stable Rust 1.85 or newer. The workspace uses Rust 2024 edition and Cargo resolver 3. Rust tests use checked-in fixtures and do not require Java.
 
-Run the same commands as CI before submitting a change:
+Run the CI checks before submitting a change:
 
 ```sh
 cargo fmt --all -- --check
@@ -11,4 +11,10 @@ cargo test --workspace
 cargo build --workspace --release
 ```
 
-Keep core logic independent of CLI formatting. Add unit tests for domain behavior and CLI integration tests for observable exit codes and output. Store small, redistributable sample recordings in `tests/fixtures` once parsers exist; document where each fixture came from. Do not commit generated reports, recordings containing sensitive application data, credentials, or `target` artifacts.
+Run the CLI against the real captured fixture:
+
+```sh
+cargo run -p jvmdelta-cli -- gc inspect tests/fixtures/jdk25-g1-real.log
+```
+
+Keep core logic independent of CLI formatting. Add unit tests for parser behavior and CLI integration tests for exit codes and output. Record each fixture's origin, JDK version, collector, and reproduction procedure in `tests/fixtures/README.md`. Do not commit sensitive recordings, credentials, or build artifacts. See [format support](GC_LOG_SUPPORT.md) before extending the parser.
